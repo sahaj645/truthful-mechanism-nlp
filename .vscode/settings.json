@@ -1,0 +1,7 @@
+{
+    "workbench.editor.autoLockGroups": {
+        "workbench.editors.gettingStartedInput": true
+    },
+    "workbench.editor.centeredLayoutAutoResize": false,
+    "workbench.editor.closeEmptyGroups": false
+}
