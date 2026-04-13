@@ -1,139 +1,258 @@
-# Incentive-Compatible Mechanism for Truthful Political Discourse using NLP
+# truthful-mechanism-nlp
+
+Production-grade simulation framework for **incentive-compatible truthful political discourse** using NLP-based claim scoring, mechanism design, and dynamic reputation updates.
+
+## Table of Contents
+- [Overview](#overview)
+- [Core Features](#core-features)
+- [Architecture](#architecture)
+- [Repository Structure](#repository-structure)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Running the Project](#running-the-project)
+- [Experiment Workflows](#experiment-workflows)
+- [Dashboard](#dashboard)
+- [Development & Quality](#development--quality)
+- [Troubleshooting](#troubleshooting)
+- [Roadmap](#roadmap)
+- [License](#license)
+
+---
 
 ## Overview
 
-This project explores the design of an AI-driven system that incentivizes truthful information sharing in political discourse. Instead of relying solely on post-hoc detection of misinformation, the system integrates natural language processing with mechanism design principles to ensure that truthful reporting becomes the most rational strategy for users.
+This repository implements a simulation-first framework for studying how platform incentives can encourage truthful behavior in political discourse. Instead of only detecting misinformation after publication, it models a feedback loop where users are rewarded for factual consistency and penalized for manipulative behavior.
 
-The core idea is to shift from reactive moderation to proactive incentive alignment by rewarding accuracy and penalizing misleading or inconsistent claims.
+The system combines:
 
----
-
-## Problem Statement
-
-Online political platforms often reward engagement, visibility, and virality. This creates incentives for users to exaggerate, manipulate, or spread misinformation.
-
-Current approaches primarily focus on detecting and removing false content after it is posted. However, they do not address the underlying incentive structure that encourages such behavior.
-
-This project addresses the problem by designing a system where:
-- Accurate information increases user reputation and influence
-- Misleading or inconsistent information reduces credibility
-- Long-term incentives favor truthful behavior
+1. **NLP-driven truth/consistency signals**
+2. **Mechanism-based reward shaping**
+3. **Reputation dynamics across repeated interactions**
 
 ---
 
-## Approach
+## Core Features
 
-The system combines three core components:
-
-### 1. NLP-Based Fact Verification
-
-Textual content is processed using transformer-based models to:
-- Extract claims from user input
-- Estimate credibility or factual consistency
-- Generate a probabilistic truth score
-
-### 2. Incentive Mechanism Design
-
-A reward function is constructed using principles from mechanism design and proper scoring rules. The reward depends on:
-- Credibility of the claim
-- Consistency with future verified information
-- Degree of deviation or manipulation
-
-Users accumulate rewards over time, which directly influence their reputation.
-
-### 3. Reputation and Influence System
-
-Each user maintains a dynamic reputation score:
-- High reputation leads to increased visibility and influence
-- Low reputation reduces reach and credibility
-
-This creates a system where truthful behavior maximizes long-term utility.
+- Claim processing pipeline with semantic scoring primitives
+- Truth score and agreement score integration
+- Reward and reputation update mechanism for each interaction round
+- Multi-round, multi-user simulation engine
+- Parameter sweep and robustness experiment scripts
+- Streamlit dashboard for interactive analysis and visualization
+- Production-oriented project metadata and dependency management via Poetry
 
 ---
 
-## System Pipeline
+## Architecture
 
-User Input  
-→ Claim Extraction  
-→ NLP-Based Fact Verification  
-→ Truth Score Computation  
-→ Incentive Mechanism  
-→ Reward Assignment  
-→ Reputation Update  
-→ Iterative Interaction
+High-level interaction loop:
 
----
+`User Claim -> Embedding/Similarity -> Truth Score -> Mechanism Reward -> Reputation Update -> Next Round`
 
-## Key Contributions
+Key module responsibilities:
 
-- Introduces an incentive-compatible framework for truthful reporting in political discourse
-- Integrates mechanism design with NLP-based semantic verification
-- Moves beyond detection to proactive incentive alignment
-- Demonstrates how truthful behavior can emerge as a stable strategy over time
+- `src/data_loader.py`  
+  Handles dataset/fact base ingestion.
+
+- `src/embedding.py`  
+  Embedding generation and vector-level operations.
+
+- `src/truth_score.py`  
+  Computes credibility/truth-oriented metrics from claim context.
+
+- `src/mechanism.py`  
+  Converts truth and agreement signals into reward/reputation updates.
+
+- `src/simulation.py`  
+  Orchestrates users, rounds, state transitions, and output records.
 
 ---
 
 ## Repository Structure
 
+```text
 truthful-mechanism-nlp/
+├─ data/
+│  ├─ political_claims.csv
+│  └─ fact_base.txt
+├─ experiments/
+│  ├─ noise_robustness.py
+│  └─ parameter_sweep.py
+├─ notebooks/
+│  └─ testscript.py
+├─ scripts/
+│  └─ download_fakenewsnet.py
+├─ src/
+│  ├─ data_loader.py
+│  ├─ embedding.py
+│  ├─ mechanism.py
+│  ├─ simulation.py
+│  └─ truth_score.py
+├─ config.yaml
+├─ dashboard.py
+├─ pyproject.toml
+├─ requirements.txt
+└─ README.md
+```
 
-data/                  # Datasets  
-notebooks/             # Exploration and prototyping  
-src/  
-  data_loader.py       # Data ingestion and preprocessing  
-  embedding.py         # Text embedding generation  
-  truth_score.py       # Credibility scoring logic  
-  mechanism.py         # Reward and reputation system  
-  simulation.py        # Agent-based simulation  
+---
 
-experiments/  
-  parameter_sweep.py  
-  noise_robustness.py  
+## Prerequisites
 
-requirements.txt  
-README.md  
+- Python **3.10+**
+- pip (or Poetry)
+- Git
+
+Optional:
+- Virtual environment tooling (`venv`, `virtualenv`, or Poetry-managed env)
 
 ---
 
 ## Installation
 
-git clone <repository_link>  
-cd truthful-mechanism-nlp  
-pip install -r requirements.txt  
+### Option A: pip + requirements.txt
+
+```bash
+git clone https://github.com/sahaj645/truthful-mechanism-nlp.git
+cd truthful-mechanism-nlp
+python -m venv .venv
+# Windows:
+.venv\Scripts\activate
+# macOS/Linux:
+# source .venv/bin/activate
+pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+### Option B: Poetry (recommended for production/development parity)
+
+```bash
+git clone https://github.com/sahaj645/truthful-mechanism-nlp.git
+cd truthful-mechanism-nlp
+poetry install
+poetry shell
+```
 
 ---
 
-## Usage
+## Configuration
 
-Run simulation:  
-python experiments/run_simulation.py  
+Primary config is defined in `config.yaml`.
 
-Run parameter sensitivity:  
-python experiments/parameter_sweep.py  
+Key fields:
 
-Run robustness test:  
-python experiments/noise_robustness.py  
+- `paths.data_dir`, `paths.claims_file`, `paths.fact_base_file`
+- `simulation.n_users_default`, `simulation.n_rounds_default`, `simulation.seed`
+- `simulation.embedding_model` (default: `all-MiniLM-L6-v2`)
+- `logging.level`, `logging.format`, `logging.log_dir`
 
----
-
-## Experimental Goals
-
-- Evaluate whether truthful agents achieve higher cumulative rewards than manipulative agents  
-- Test stability of the mechanism across parameter variations  
-- Analyze robustness under noisy or imperfect NLP verification  
-- Study convergence of reputation dynamics over repeated interactions  
+If you change data file locations or model configuration, update `config.yaml` accordingly before running experiments.
 
 ---
 
-## Future Work
+## Running the Project
 
-- Integration with real-time fact-checking systems  
-- Extension to multi-agent reinforcement learning environments  
-- Handling coordinated misinformation and collusion  
-- Deployment as a scalable system for live platforms  
+### Run experiments
+
+```bash
+python experiments/parameter_sweep.py
+python experiments/noise_robustness.py
+```
+
+### Run Streamlit dashboard
+
+```bash
+streamlit run dashboard.py
+```
+
+Dashboard provides:
+- Reputation trajectories
+- Truth score distributions
+- Interaction/agreement heatmap
+- Claim timeline across rounds
 
 ---
 
-## Conclusion
+## Experiment Workflows
 
-This project shifts the paradigm from detecting misinformation to designing systems where truthfulness is incentivized. By aligning user incentives with factual accuracy, it lays the foundation for more reliable and trustworthy AI-driven platforms.
+### 1) Parameter sweep
+Use `experiments/parameter_sweep.py` to evaluate mechanism sensitivity under varying settings (e.g., users/rounds/noise assumptions).
+
+### 2) Noise robustness
+Use `experiments/noise_robustness.py` to test stability under imperfect truth signal conditions.
+
+Recommended outputs to track:
+- Average reward by user type
+- Reputation convergence/divergence
+- Truth-score drift over rounds
+- Mechanism stability under perturbations
+
+---
+
+## Dashboard
+
+`dashboard.py` offers an interview-ready UI to run and inspect simulations interactively.
+
+Typical flow:
+1. Select number of users and rounds
+2. Set random seed
+3. Run simulation
+4. Inspect generated charts and table snapshots
+
+---
+
+## Development & Quality
+
+If using Poetry, dev dependencies are already declared in `pyproject.toml`:
+- `pytest`, `pytest-cov`
+- `ruff`, `black`, `mypy`
+- `pre-commit`, `coverage`
+
+Suggested checks:
+
+```bash
+# Formatting
+black .
+
+# Linting
+ruff check .
+
+# Type checking
+mypy src
+
+# Tests
+pytest -q
+```
+
+---
+
+## Troubleshooting
+
+- **Model download delays / network issues**  
+  First run may download transformer assets; ensure internet access and retry.
+
+- **Out-of-memory with larger settings**  
+  Reduce number of users/rounds and rerun.
+
+- **Streamlit not found**  
+  Install dependencies in the active environment:
+  `pip install -r requirements.txt` or `poetry install`.
+
+- **Config/data path errors**  
+  Verify `config.yaml` paths and data files exist under `data/`.
+
+---
+
+## Roadmap
+
+- Add explicit CLI entrypoints for simulation orchestration
+- Add persisted experiment tracking (e.g., MLflow integration path)
+- Add stronger unit/integration test coverage per module
+- Add containerized runtime profile for reproducible deployments
+
+---
+
+## License
+
+MIT License.
