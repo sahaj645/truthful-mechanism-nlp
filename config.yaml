@@ -1,0 +1,15 @@
+# Senior ML Engineer Production Config
+simulation:
+  n_users: 10
+  n_rounds: 50
+  embedding_model: "all-MiniLM-L6-v2"
+  
+mlflow:
+  tracking_uri: "http://localhost:5000"
+  
+dataset:
+  fakenewsnet: "data/fakenewsnet/dataset/PolitiFact"
+  
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
