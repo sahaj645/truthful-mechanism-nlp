@@ -1,0 +1,10 @@
+user_id,claim_text,round,ground_truth
+user1,"The economy is booming under current leadership.",1,0.8
+user2,"Taxes need to be raised to fund social programs.",1,0.6
+user3,"Immigration policies are too lax.",1,0.7
+user1,"Previous claim was accurate based on GDP data.",2,0.9
+user4,"Climate change is a hoax perpetuated by scientists.",2,0.2
+user2,"User1's economic claim ignores inflation metrics.",2,0.4
+user3,"We need stronger border security immediately.",3,0.75
+user5,"Healthcare should be free for all citizens.",3,0.5
+user4,"Elections were rigged - widespread fraud occurred.",3,0.1

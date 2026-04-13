@@ -4,3 +4,5 @@ sentence-transformers
 scikit-learn
 matplotlib
 torch
+streamlit
+plotly
