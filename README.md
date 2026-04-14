@@ -1,6 +1,6 @@
 # truthful-mechanism-nlp
 
-Production-grade simulation framework for **incentive-compatible truthful political discourse** using NLP-based claim scoring, mechanism design, and dynamic reputation updates.
+Simulation framework for **incentive-compatible truthful political discourse** using NLP-based claim scoring, mechanism design, and dynamic reputation updates.
 
 ## Table of Contents
 - [Overview](#overview)
